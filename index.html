@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Token System</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to bottom right, #fed7aa, #fca5a5);
+            padding: 1rem;
+        }
+        
+        /* Main container */
+        .token-system {
+            width: 100%;
+            max-width: 450px;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border: 1px solid #fed7aa;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(to right, #f97316, #ef4444);
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #fed7aa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .header-time {
+            text-align: right;
+            color: white;
+        }
+        
+        .header-time-value {
+            font-size: 1.125rem;
+            font-weight: 500;
+        }
+        
+        .header-date {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+        
+        /* Main content */
+        .content {
+            padding: 1.5rem;
+            background-color: white;
+        }
+        
+        .institution {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .institution-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .institution-dept {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        /* Live token */
+        .live-token {
+            margin-bottom: 1.5rem;
+            background-color: #f9fafb;
+            border-radius: 0.5rem;
+            padding: 1.25rem;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .token-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .token-label {
+            color: #374151;
+            font-weight: 600;
+        }
+        
+        .token-badge {
+            background-color: #3b82f6;
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+        }
+        
+        .live-token-display {
+            background: linear-gradient(to right, #eff6ff, #dbeafe);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            border: 1px solid #bfdbfe;
+        }
+        
+        .token-number {
+            font-size: 3rem;
+            font-family: monospace;
+            font-weight: bold;
+            letter-spacing: 0.25rem;
+            color: #1e40af;
+        }
+        
+        .token-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        
+        /* Your token */
+        .your-token {
+            margin-bottom: 1.5rem;
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .status-active {
+            background-color: #d1fae5;
+            color: #047857;
+        }
+        
+        .status-missed {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+        
+        .your-token-display {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .your-token-number {
+            padding: 1.5rem 2rem;
+            border-radius: 0.5rem;
+            font-size: 3.75rem;
+            font-family: monospace;
+            font-weight: bold;
+            letter-spacing: 0.25rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.7s ease, color 0.7s ease;
+        }
+        
+        .token-green {
+            background-color: #d1fae5;
+            color: #059669;
+            border: 1px solid #a7f3d0;
+        }
+        
+        .token-red {
+            background-color: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+        
+        .token-green-pulse {
+            background-color: #a7f3d0;
+            color: #047857;
+        }
+        
+        .token-red-pulse {
+            background-color: #fecaca;
+            color: #b91c1c;
+        }
+        
+        .status-message {
+            margin-top: 1rem;
+            text-align: center;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            background-color: #f9fafb;
+        }
+        
+        .status-text-green {
+            color: #059669;
+        }
+        
+        .status-text-red {
+            color: #dc2626;
+        }
+        
+        .status-heading {
+            font-weight: 600;
+        }
+        
+        .status-detail {
+            margin-top: 0.25rem;
+            font-size: 0.875rem;
+        }
+        
+        .status-estimate {
+            margin-top: 0.25rem;
+            font-size: 0.75rem;
+        }
+        
+        /* Information section */
+        .info-section {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+        
+        .dot-blue {
+            background-color: #3b82f6;
+        }
+        
+        .dot-green {
+            background-color: #10b981;
+        }
+        
+        .info-text {
+            color: #4b5563;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #f9fafb;
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        
+        /* Utilities */
+        .mb-2 {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="token-system">
+        <!-- Header -->
+        <div class="header">
+            <h1>Token System</h1>
+            <div class="header-time">
+                <div class="header-time-value" id="current-time">12:00 PM</div>
+                <div class="header-date">Today</div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Institution Name -->
+            <div class="institution">
+                <h2 class="institution-name">MGM CLINIC</h2>
+                <p class="institution-dept">Outpatient Department</p>
+            </div>
+            
+            <!-- Live Token Display -->
+            <div class="live-token">
+                <div class="token-header">
+                    <p class="token-label">Now Serving</p>
+                    <span class="token-badge">LIVE</span>
+                </div>
+                <div class="live-token-display">
+                    <span class="token-number" id="live-token">000</span>
+                </div>
+                <div class="token-footer">
+                    <span>Auto-updates</span>
+                    <span>Counter #1</span>
+                </div>
+            </div>
+            
+            <!-- Your Token -->
+            <div class="your-token">
+                <div class="token-header mb-2">
+                    <p class="token-label">Your Token</p>
+                    <div class="status-badge" id="status-badge">ACTIVE</div>
+                </div>
+                
+                <div class="your-token-display">
+                    <div class="your-token-number" id="your-token">023</div>
+                </div>
+                
+                <!-- Status message -->
+                <div class="status-message">
+                    <div id="status-content">
+                        <p class="status-heading">Your turn is coming up!</p>
+                        <p class="status-detail">23 tokens before your turn</p>
+                        <p class="status-estimate">Estimated wait: ~46 minutes</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Information Section -->
+            <div class="info-section">
+                <div class="info-row">
+                    <div class="info-item">
+                        <div class="info-dot dot-blue"></div>
+                        <span class="info-text">Average wait: 2 min/token</span>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-dot dot-green"></div>
+                        <span class="info-text">Staff: 2 counters open</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <span id="last-updated">Last updated: Just now</span>
+            <span>Powered by mgm</span>
+        </div>
+    </div>
+
+    <script>
+        // Constants
+        const YOUR_TOKEN = 23;
+        const AVG_MINUTES_PER_TOKEN = 2;
+        
+        // DOM Elements
+        const liveTokenEl = document.getElementById('live-token');
+        const yourTokenEl = document.getElementById('your-token');
+        const statusBadgeEl = document.getElementById('status-badge');
+        const statusContentEl = document.getElementById('status-content');
+        const currentTimeEl = document.getElementById('current-time');
+        const lastUpdatedEl = document.getElementById('last-updated');
+        
+        // State
+        let liveToken = 0;
+        let isPulsing = true;
+        
+        // Initialize
+        updateDisplay();
+        startTimeUpdates();
+        startTokenUpdates();
+        startPulsingEffect();
+        
+        // Functions
+        function updateDisplay() {
+            // Update live token display
+            liveTokenEl.textContent = liveToken.toString().padStart(3, '0');
+            
+            // Determine if live token is greater than your token
+            const isLiveTokenGreater = liveToken > YOUR_TOKEN;
+            
+            // Update your token display
+            if (isLiveTokenGreater) {
+                yourTokenEl.className = `your-token-number ${isPulsing ? 'token-red-pulse' : 'token-red'}`;
+                statusBadgeEl.className = 'status-badge status-missed';
+                statusBadgeEl.textContent = 'MISSED';
+            } else {
+                yourTokenEl.className = `your-token-number ${isPulsing ? 'token-green-pulse' : 'token-green'}`;
+                statusBadgeEl.className = 'status-badge status-active';
+                statusBadgeEl.textContent = 'ACTIVE';
+            }
+            
+            // Calculate token difference and wait time
+            const tokenDifference = isLiveTokenGreater ? liveToken - YOUR_TOKEN : YOUR_TOKEN - liveToken;
+            const waitTimeMinutes = tokenDifference > 0 ? tokenDifference * AVG_MINUTES_PER_TOKEN : 0;
+            
+            // Update status message
+            if (isLiveTokenGreater) {
+                statusContentEl.innerHTML = `
+                    <p class="status-heading status-text-red">You missed your turn!</p>
+                    <p class="status-detail status-text-red">Wait for ${tokenDifference > 5 ? '5+' : tokenDifference} tokens or take a new token</p>
+                `;
+            } else {
+                if (tokenDifference === 0) {
+                    statusContentEl.innerHTML = `
+                        <p class="status-heading status-text-green">It's your turn now!</p>
+                    `;
+                } else {
+                    statusContentEl.innerHTML = `
+                        <p class="status-heading status-text-green">Your turn is coming up!</p>
+                        <p class="status-detail status-text-green">${tokenDifference} tokens before your turn</p>
+                        <p class="status-estimate status-text-green">Estimated wait: ~${waitTimeMinutes} minutes</p>
+                    `;
+                }
+            }
+            
+            // Update last updated time
+            lastUpdatedEl.textContent = 'Last updated: Just now';
+        }
+        
+        function startTokenUpdates() {
+            // For demo purposes, update every minute
+            // In a real app, this would pull from a server
+            setInterval(() => {
+                liveToken++;
+                updateDisplay();
+            }, 600); // 60000ms = 1 minute
+            
+            // For testing purposes, add a quick increment button (hidden in production)
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowUp') {
+                    liveToken++;
+                    updateDisplay();
+                } else if (e.key === 'ArrowDown' && liveToken > 0) {
+                    liveToken--;
+                    updateDisplay();
+                }
+            });
+        }
+        
+        function startPulsingEffect() {
+            setInterval(() => {
+                isPulsing = !isPulsing;
+                updateDisplay();
+            }, 1500);
+        }
+        
+        function startTimeUpdates() {
+            // Update time immediately and then every second
+            updateTime();
+            setInterval(updateTime, 1000);
+        }
+        
+        function updateTime() {
+            const now = new Date();
+            currentTimeEl.textContent = formatTime(now);
+        }
+        
+        function formatTime(date) {
+            return date.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            });
+        }
+    </script>
+</body>
+</html>
